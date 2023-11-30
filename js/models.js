@@ -73,21 +73,55 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory(user, newStory) {
-    // console.log(user);
-    console.log(user.loginToken);
-    const addNewStory = await axios.post(BASE_URL + "/stories", {params: {
-      "token": user,
-      "story":{
-        "author": newStory.author,
-        "title": newStory.title,
-        "url": newStory.url
-      }
-    }})
-    console.log(addNewStory);
-  }
-}
 
+  // DOES NOT WORK
+
+//   async addStory(user, newStory) {
+//     console.log(user);
+//     console.log(user.loginToken);
+//     const { author, title, url } = newStory;
+//     const token = user.loginToken;
+//     const addNewStory = await axios.post(`${BASE_URL}/stories`, {data: {
+//       token,
+//       "story":{ author, title, url }
+//     }})
+//     console.log(addNewStory);
+//   }
+// }
+
+
+// WORKS
+
+async addStory(user, newStory) {
+  const token = user.loginToken;
+  const { author, title, url } = newStory;
+
+  const addNewStory = await axios({
+    method: "POST",
+    url: `${BASE_URL}/stories`,
+    data: { token, story: { author, title, url } },
+  });
+
+  console.log(addNewStory);
+}}
+
+
+// SOLUTION
+
+// async addStory(user, { title, author, url }) {
+//   const token = user.loginToken;
+//   const response = await axios({
+//     method: "POST",
+//     url: `${BASE_URL}/stories`,
+//     data: { token, story: { title, author, url } },
+//   });
+
+//   const story = new Story(response.data.story);
+//   this.stories.unshift(story);
+//   user.ownStories.unshift(story);
+
+//   return story;
+// }
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
