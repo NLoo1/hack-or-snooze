@@ -24,7 +24,16 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
+
+    // Gets hostname. https://www.google.com ==> google.com
+    // Does NOT account for less common domains like ru, ca, etc.
+    if(this.url.includes("www.") && this.url.includes(".com"||".org" || ".gov" || ".net")){
+      return this.url.substring(this.url.indexOf("www.")+4, this.url.indexOf(".com"||".org" || ".gov" || ".net") +4 )
+    } else try{ // If the URL doesn't contain www for some reason
+      return this.url.substring(this.url.indexOf("/")+2, this.url.indexOf(".com | .gov" | ".org" || ".net") +4)
+    } catch(evt){ // All other cases
+      return this.url;
+    }
     return "hostname.com";
   }
 }
@@ -74,7 +83,7 @@ class StoryList {
    */
 
 
-  // DOES NOT WORK
+  // DOES NOT WORK IDK WHY
 
 //   async addStory(user, newStory) {
 //     console.log(user);
@@ -96,32 +105,22 @@ async addStory(user, newStory) {
   const token = user.loginToken;
   const { author, title, url } = newStory;
 
+  // Add story to API
   const addNewStory = await axios({
     method: "POST",
     url: `${BASE_URL}/stories`,
     data: { token, story: { author, title, url } },
   });
 
-  console.log(addNewStory);
+  // Shift our story lists accordingly. Unshift to keep these sorted reverse chronologically
+  const story = new Story(response.data.story);
+  this.stories.unshift(story);
+  user.ownStories.unshift(story);
+
+  // Doesn't really do anything except confirm story is ok
+  return story;
 }}
 
-
-// SOLUTION
-
-// async addStory(user, { title, author, url }) {
-//   const token = user.loginToken;
-//   const response = await axios({
-//     method: "POST",
-//     url: `${BASE_URL}/stories`,
-//     data: { token, story: { title, author, url } },
-//   });
-
-//   const story = new Story(response.data.story);
-//   this.stories.unshift(story);
-//   user.ownStories.unshift(story);
-
-//   return story;
-// }
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
