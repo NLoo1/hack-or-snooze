@@ -158,5 +158,5 @@ async function favorite(){
 
 }
 
-$btnSubmit.on("click", submitNewStory);
+
 $allStoriesList.on('click', "i", favorite)

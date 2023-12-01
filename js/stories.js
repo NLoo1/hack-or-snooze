@@ -36,15 +36,15 @@ function generateStoryMarkup(story) {
     `);
 }
 
-function getUserFavorites(story){
-  story.each(function(){
+function getUserFavorites(story) {
+  const favoriteStories = Object.values(currentUser.favorites).map(fav => fav.storyId);
+
+  story.each(function () {
     const $storyId = $(this).attr('id');
-    for(let story in Object.values(currentUser.favorites)){
-      if(currentUser.favorites[story].storyId == $storyId){
-        $(this).children("i").addClass('fa-solid').removeClass('fa-regular');
-      }
+    if (favoriteStories.includes($storyId)) {
+      $(this).children("i").addClass('fa-solid').removeClass('fa-regular');
     }
-  })
+  });
 }
 
 
@@ -60,7 +60,6 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     getUserFavorites($story)
     $allStoriesList.append($story);
-    // console.log($story);
   }
 
   $faStar = $(".fa-regular.fa-star")
@@ -73,8 +72,6 @@ async function submitNewStory(){
   const title = $txtTitle.val();
   const url = $txtURL.val();
   await storyList.addStory(currentUser, {title: title, author: author, url: url});
-  // location.reload();
-  console.log("ADDED STORY!")
   putStoriesOnPage();
 
   $txtAuthor.val("");
@@ -84,3 +81,4 @@ async function submitNewStory(){
 }
 
 
+$btnSubmit.on("click", submitNewStory);
