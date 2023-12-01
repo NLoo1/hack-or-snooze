@@ -40,7 +40,10 @@ function hidePageComponents() {
     $allStoriesList,
     $loginForm,
     $signupForm,
-    $submitForm,
+    $submitForm
+    // $txtAuthor,
+    // $txtURL,
+    // $btnSubmit
   ];
   components.forEach(c => c.hide());
 }

@@ -10,6 +10,7 @@ function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
   putStoriesOnPage();
+
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -25,8 +26,12 @@ function navLoginClick(evt) {
 
 function openStorySubmit(){
   if($submitForm.hasClass("hidden")){
+    $submitForm.show();
     $submitForm.removeClass('hidden');
-  } else if(!($submitForm.hasClass("hidden"))) $submitForm.addClass('hidden');
+  } else if(!($submitForm.hasClass("hidden"))){
+    $submitForm.addClass('hidden');
+    $submitForm.hide();
+  }
 }
 
 function showFavorites(){
@@ -78,7 +83,10 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();  
 }
 
-$navSubmit.on('click', openStorySubmit)
-$navLogin.on("click", navLoginClick);
-$navFavorites.on("click", showFavorites);
-$navStories.on("click", showOwnStories);
+$(document).on('click', '#nav-submit', openStorySubmit);
+$(document).on('click', '#nav-login', navLoginClick);
+$(document).on('click', '#nav-favorites', showFavorites);
+$(document).on('click', '#nav-stories', showOwnStories);
+// $navLogin.on("click", navLoginClick);
+// $navFavorites.on("click", showFavorites);
+// $navStories.on("click", showOwnStories);
