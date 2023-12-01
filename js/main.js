@@ -13,6 +13,14 @@ const $signupForm = $("#signup-form");
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
+const $navSubmit = $("#nav-submit")
+
+const $submitForm = $("#postStory")
+const $txtAuthor = $("#txtAuthor")
+const $txtTitle = $("#txtTitle")
+const $txtURL = $("#txtURL")
+const $btnSubmit = $("#btnSubmit")
+
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -24,9 +32,17 @@ function hidePageComponents() {
     $allStoriesList,
     $loginForm,
     $signupForm,
+    $submitForm,
   ];
   components.forEach(c => c.hide());
 }
+
+function openStorySubmit(){
+  // console.log("hi!")
+  $submitForm.removeClass('hidden');
+}
+
+$navSubmit.on('click', openStorySubmit)
 
 /** Overall function to kick off the app. */
 
@@ -41,10 +57,13 @@ async function start() {
   if (currentUser) updateUIOnUserLogin();
 }
 
+
+
+
 // Once the DOM is entirely loaded, begin the app
 
-console.warn("HEY STUDENT: This program sends many debug messages to" +
-  " the console. If you don't see the message 'start' below this, you're not" +
-  " seeing those helpful debug messages. In your browser console, click on" +
-  " menu 'Default Levels' and add Verbose");
+// console.warn("HEY STUDENT: This program sends many debug messages to" +
+//   " the console. If you don't see the message 'start' below this, you're not" +
+//   " seeing those helpful debug messages. In your browser console, click on" +
+//   " menu 'Default Levels' and add Verbose");
 $(start);

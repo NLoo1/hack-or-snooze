@@ -113,7 +113,7 @@ async addStory(user, newStory) {
   });
 
   // Shift our story lists accordingly. Unshift to keep these sorted reverse chronologically
-  const story = new Story(response.data.story);
+  const story = new Story(addNewStory.data.story);
   this.stories.unshift(story);
   user.ownStories.unshift(story);
 

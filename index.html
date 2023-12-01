@@ -15,6 +15,7 @@
 <html lang="en">
 
 <head>
+  <script src="https://kit.fontawesome.com/145939604c.js" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -32,16 +33,13 @@
 
 <body>
 
-  <form id="postStory">
-    <label for=""><input type="text"></label>
-    <label for=""><input type="text"></label>
-    <label for=""><input type="text"></label>
-  </form>
-
 <!-- top navigation bar -->
 <nav>
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
+  </div>
+  <div class="nav-left">
+    <a id="nav-submit">submit</a>
   </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
@@ -49,6 +47,13 @@
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
 </nav>
+
+<form id="postStory" class="hidden"> <!-- class = hidden -->
+  <label for="txtAuthor">Author<input type="text" id="txtAuthor"></label>
+  <label for="txtTitle">Title<input type="text" id="txtTitle"></label>
+  <label for="txtURL">URL<input type="text" id="txtURL"></label>
+  <input type="button" value="Submit" id="btnSubmit">
+</form>
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
@@ -105,6 +110,7 @@
 <!-- Library JS & our JS -->
 <script src="https://unpkg.com/jquery"></script>
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
+
 
 <script src="js/models.js"></script>
 <script src="js/main.js"></script>
