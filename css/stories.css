@@ -37,3 +37,8 @@
 .story-user {
   display: block;
 }
+
+.btnRemoveStory{
+  margin: 0;
+  padding: 0;
+}

@@ -36,6 +36,8 @@ function generateStoryMarkup(story) {
     `);
 }
 
+
+// Goes through HTML and adds solid stars to any favorited stories
 function getUserFavorites(story) {
   const favoriteStories = Object.values(currentUser.favorites).map(fav => fav.storyId);
 
@@ -45,6 +47,23 @@ function getUserFavorites(story) {
       $(this).children("i").addClass('fa-solid').removeClass('fa-regular');
     }
   });
+}
+
+
+// Adds a remove button to user's own stories
+function addOwnStories(story){
+  const ownStories = Object.values(currentUser.ownStories).map(own => own.storyId);
+
+  story.each(function () {
+    const $storyId = $(this).attr('id');
+    if (ownStories.includes($storyId)) {
+      // console.log($(this))
+      const $newButton = $("<input>")
+      $newButton.prop('type', "button").attr("class", "btnRemoveStory").prop('value', "remove?");
+      $(this).append($newButton);
+    }
+  });
+
 }
 
 
@@ -59,12 +78,20 @@ function putStoriesOnPage() {
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
     getUserFavorites($story)
+    addOwnStories($story);
     $allStoriesList.append($story);
   }
 
   $faStar = $(".fa-regular.fa-star")
   $faStarFilled = $(".fa-solid.fa-star")
+  $removeButton = $(".btnRemoveStory");
+
+  console.log($faStar)
+  console.log($faStarFilled)
+  console.log($removeButton)
+
   $allStoriesList.show();
+
 }
 
 async function submitNewStory(){
@@ -80,5 +107,35 @@ async function submitNewStory(){
   $submitForm.hide();
 }
 
+// Removes story
+async function removeStory(){
+  const confirmed = window.confirm("Are you sure you want to delete this story?");
+  if(confirmed){
+    const $story = $(this).parent().attr('id'); 
+    const favoriteStories = Object.values(currentUser.favorites).map(fav => fav.storyId);
+ 
+    // Check if the removed story is a favorite
+    if(favoriteStories.includes($story)){
+      currentUser.favorites = Object.values(currentUser.favorites).filter(story => story.storyId !== $story);
+      const removeFave = await axios({
+        url: `${BASE_URL}/users/${currentUser.username}/favorites/${$story}`,
+        method: "DELETE",
+        data: {token: currentUser.loginToken},
+      });
+    }
 
-$btnSubmit.on("click", submitNewStory);
+    const removeStory = await axios({
+      url: `${BASE_URL}/stories/${$story}`,
+      method: "DELETE",
+      data: {token: currentUser.loginToken},
+    });
+
+    // Removes from DOM
+    $(this).parent().remove();
+
+  }
+  else return;
+}
+
+$(document).on("click", "#btnSubmit", submitNewStory);
+$(document).on("click", ".btnRemoveStory", removeStory);
