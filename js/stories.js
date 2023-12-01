@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <i class="fa-regular fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -48,6 +49,8 @@ function putStoriesOnPage() {
     $allStoriesList.append($story);
   }
 
+  $faStar = $(".fa-regular.fa-star")
+  $faStarFilled = $(".fa-solid.fa-star")
   $allStoriesList.show();
 }
 
@@ -66,4 +69,50 @@ async function submitNewStory(){
   $submitForm.hide();
 }
 
+
+async function favorite(){
+  // ADD FAVORITE
+  if($(this).hasClass("fa-regular")){
+    $(this).removeClass("fa-regular").addClass("fa-solid");
+
+    const favStory = $(this).parent().attr('id')
+    const getStories = await axios.get(`${BASE_URL}/stories`)
+
+    // Filter current user's favorites
+    const addStory = getStories.data.stories.filter(e=> e.storyId == favStory);
+    const test = new Story(...addStory);
+    currentUser.favorites.push(new Story(...addStory));
+
+    // Make changes to API
+    const addFave = await axios({
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
+      method: "POST",
+      data: {token: currentUser.loginToken},
+    });
+
+    console.log(addFave);
+
+  }
+
+  // REMOVE FAVORITE
+  else if($(this).hasClass("fa-solid")){
+    $(this).removeClass("fa-solid").addClass("fa-regular");
+
+    const favStory = $(this).parent().attr('id')
+
+    // FINISH THIS LATER
+    currentUser.favorites = currentUser.favorites.filter((e) => e.storyId !== favStory)    
+
+    const removeFave = await axios({
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
+      method: "DELETE",
+      data: {token: currentUser.loginToken},
+    });
+    // const removeFave = await axios.delete(`${BASE_URL}/users/${currentUser}/favorites/`
+    // + $(this).parent().attr('id') + "&?token=" + currentUser.loginToken);
+  }
+
+}
+
 $btnSubmit.on("click", submitNewStory);
+$allStoriesList.on('click', "i", favorite)

@@ -21,6 +21,9 @@ const $txtTitle = $("#txtTitle")
 const $txtURL = $("#txtURL")
 const $btnSubmit = $("#btnSubmit")
 
+let $faStar;
+let $faStarFilled;
+
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
