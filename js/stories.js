@@ -36,6 +36,18 @@ function generateStoryMarkup(story) {
     `);
 }
 
+function getUserFavorites(story){
+  story.each(function(){
+    const $storyId = $(this).attr('id');
+    for(let story in Object.values(currentUser.favorites)){
+      if(currentUser.favorites[story].storyId == $storyId){
+        $(this).children("i").addClass('fa-solid').removeClass('fa-regular');
+      }
+    }
+  })
+}
+
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
@@ -46,7 +58,9 @@ function putStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
+    getUserFavorites($story)
     $allStoriesList.append($story);
+    // console.log($story);
   }
 
   $faStar = $(".fa-regular.fa-star")
@@ -70,49 +84,3 @@ async function submitNewStory(){
 }
 
 
-async function favorite(){
-  // ADD FAVORITE
-  if($(this).hasClass("fa-regular")){
-    $(this).removeClass("fa-regular").addClass("fa-solid");
-
-    const favStory = $(this).parent().attr('id')
-    const getStories = await axios.get(`${BASE_URL}/stories`)
-
-    // Filter current user's favorites
-    const addStory = getStories.data.stories.filter(e=> e.storyId == favStory);
-    const test = new Story(...addStory);
-    currentUser.favorites.push(new Story(...addStory));
-
-    // Make changes to API
-    const addFave = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
-      method: "POST",
-      data: {token: currentUser.loginToken},
-    });
-
-    console.log(addFave);
-
-  }
-
-  // REMOVE FAVORITE
-  else if($(this).hasClass("fa-solid")){
-    $(this).removeClass("fa-solid").addClass("fa-regular");
-
-    const favStory = $(this).parent().attr('id')
-
-    // FINISH THIS LATER
-    currentUser.favorites = currentUser.favorites.filter((e) => e.storyId !== favStory)    
-
-    const removeFave = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
-      method: "DELETE",
-      data: {token: currentUser.loginToken},
-    });
-    // const removeFave = await axios.delete(`${BASE_URL}/users/${currentUser}/favorites/`
-    // + $(this).parent().attr('id') + "&?token=" + currentUser.loginToken);
-  }
-
-}
-
-$btnSubmit.on("click", submitNewStory);
-$allStoriesList.on('click', "i", favorite)
