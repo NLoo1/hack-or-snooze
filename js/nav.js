@@ -23,7 +23,50 @@ function navLoginClick(evt) {
   $signupForm.show();
 }
 
-$navLogin.on("click", navLoginClick);
+function openStorySubmit(){
+  if($submitForm.hasClass("hidden")){
+    $submitForm.removeClass('hidden');
+  } else if(!($submitForm.hasClass("hidden"))) $submitForm.addClass('hidden');
+}
+
+function showFavorites(){
+  // Remove LIs and show only favorites
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    getUserFavorites($story)
+    addOwnStories($story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+
+}
+
+function showOwnStories(){
+  // Remove LIs and show only stories
+  $allStoriesList.empty();
+
+  // if(currentUser.ownStories.length == 0){
+  //   $allStoriesList.innerText = "You have no stories!";
+  //   $allStoriesList.show();
+  //   return;
+  // }
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.ownStories) {
+    const $story = generateStoryMarkup(story);
+    getUserFavorites($story)
+    addOwnStories($story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+
+
+}
 
 /** When a user first logins in, update the navbar to reflect that. */
 
@@ -32,7 +75,10 @@ function updateNavOnLogin() {
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
-  $navUserProfile.text(`${currentUser.username}`).show();
-
-  
+  $navUserProfile.text(`${currentUser.username}`).show();  
 }
+
+$navSubmit.on('click', openStorySubmit)
+$navLogin.on("click", navLoginClick);
+$navFavorites.on("click", showFavorites);
+$navStories.on("click", showOwnStories);

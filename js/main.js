@@ -14,6 +14,8 @@ const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 const $navSubmit = $("#nav-submit")
+const $navFavorites = $("#nav-favorites")
+const $navStories = $("#nav-stories")
 
 const $submitForm = $("#postStory")
 const $txtAuthor = $("#txtAuthor")
@@ -43,12 +45,7 @@ function hidePageComponents() {
   components.forEach(c => c.hide());
 }
 
-function openStorySubmit(){
-  // console.log("hi!")
-  $submitForm.removeClass('hidden');
-}
 
-$navSubmit.on('click', openStorySubmit)
 
 /** Overall function to kick off the app. */
 

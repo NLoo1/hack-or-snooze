@@ -86,10 +86,6 @@ function putStoriesOnPage() {
   $faStarFilled = $(".fa-solid.fa-star")
   $removeButton = $(".btnRemoveStory");
 
-  console.log($faStar)
-  console.log($faStarFilled)
-  console.log($removeButton)
-
   $allStoriesList.show();
 
 }
