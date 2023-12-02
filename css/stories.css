@@ -8,6 +8,7 @@
   color: gray;
   font-size: 0.8rem;
   margin: 10px 0;
+  line-height: 1.2em;
 }
 
 #stories-loading-msg {
@@ -30,12 +31,22 @@
   text-decoration: none;
 }
 
-.story-author {
-  margin-left: 2em;
+.story-author, .story-user{
+  margin-left: 1.5em;
+}
+
+.story-author{
+
+  font-size: 1em;
+  color: green;
+  font-weight: bold;
 }
 
 .story-user {
   display: block;
+  color: orange;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1em;
 }
 
 .btnRemoveStory{

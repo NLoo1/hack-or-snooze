@@ -27,12 +27,12 @@ function generateStoryMarkup(story) {
       <li id="${story.storyId}">
         <i class="fa-regular fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
+          <b>${story.title}</b>
         </a>
-        <small class="story-hostname">(${hostName})</small>
+        <small class="story-hostname">(${hostName})</small><br>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
-      </li>
+      </li><hr>
     `);
 }
 
