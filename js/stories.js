@@ -77,8 +77,11 @@ function putStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
-    getUserFavorites($story)
-    addOwnStories($story);
+    if(currentUser){
+      getUserFavorites($story)
+      addOwnStories($story);
+    }
+    
     $allStoriesList.append($story);
   }
 
@@ -126,9 +129,17 @@ async function removeStory(){
       data: {token: currentUser.loginToken},
     });
 
+    // Remove from own stories 
+    currentUser.ownStories = currentUser.ownStories.filter(story => story.storyId !== $story);
+
+    // Remove from storyList
+    storyList.stories = storyList.stories.filter(story => story.storyId !== $story);
+
     // Removes from DOM
     $(this).parent().remove();
 
+    // Change this later
+    // location.reload();
   }
   else return;
 }

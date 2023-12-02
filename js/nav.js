@@ -38,6 +38,11 @@ function showFavorites(){
   // Remove LIs and show only favorites
   $allStoriesList.empty();
 
+  if(currentUser.favorites.length == 0){
+    $allStoriesList.text("You have no favorites!")
+    $allStoriesList.show();
+    return;
+  }
   // loop through all of our stories and generate HTML for them
   for (let story of currentUser.favorites) {
     const $story = generateStoryMarkup(story);
@@ -54,11 +59,11 @@ function showOwnStories(){
   // Remove LIs and show only stories
   $allStoriesList.empty();
 
-  // if(currentUser.ownStories.length == 0){
-  //   $allStoriesList.innerText = "You have no stories!";
-  //   $allStoriesList.show();
-  //   return;
-  // }
+  if(currentUser.ownStories.length == 0){
+    $allStoriesList.text("You have no stories!")
+    $allStoriesList.show();
+    return;
+  }
 
   // loop through all of our stories and generate HTML for them
   for (let story of currentUser.ownStories) {
@@ -81,6 +86,7 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();  
+  $navLeft.show();
 }
 
 $(document).on('click', '#nav-submit', openStorySubmit);

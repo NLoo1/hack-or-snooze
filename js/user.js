@@ -25,6 +25,9 @@ async function login(evt) {
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
+
+  $loginForm.hide();
+  $signupForm.hide();
 }
 
 $loginForm.on("submit", login);
@@ -58,6 +61,7 @@ $signupForm.on("submit", signup);
 
 function logout(evt) {
   console.debug("logout", evt);
+  $navLeft.hide();
   localStorage.clear();
   location.reload();
 }
@@ -109,7 +113,6 @@ function saveUserCredentialsInLocalStorage() {
 
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
-
   $allStoriesList.show();
 
   updateNavOnLogin();
@@ -117,44 +120,52 @@ function updateUIOnUserLogin() {
 
 
 async function favorite(){
-  // ADD FAVORITE
-  if($(this).hasClass("fa-regular")){
-    $(this).removeClass("fa-regular").addClass("fa-solid");
 
-    // Get ID of story
-    const favStory = $(this).parent().attr('id')
-    const getStories = await axios.get(`${BASE_URL}/stories`)
-
-    // Filter current user's favorites
-    const addStory = getStories.data.stories.filter(e=> e.storyId == favStory);
-    const test = new Story(...addStory);
-    currentUser.favorites.push(new Story(...addStory));
-
-    // Make changes to API
-    const addFave = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
-      method: "POST",
-      data: {token: currentUser.loginToken},
-    });
-
+  if(!currentUser){
+    alert("Login or sign up to add favorites!");
+    return;
   }
+  else{
+    // ADD FAVORITE
+    if($(this).hasClass("fa-regular")){
+      $(this).removeClass("fa-regular").addClass("fa-solid");
 
-  // REMOVE FAVORITE
-  else if($(this).hasClass("fa-solid")){
-    $(this).removeClass("fa-solid").addClass("fa-regular");
+      // Get ID of story
+      const favStory = $(this).parent().attr('id')
+      const getStories = await axios.get(`${BASE_URL}/stories`)
 
-    const favStory = $(this).parent().attr('id')
+      // Filter current user's favorites
+      const addStory = getStories.data.stories.filter(e=> e.storyId == favStory);
+      const test = new Story(...addStory);
+      currentUser.favorites.push(new Story(...addStory));
 
-    // Filter favorites to exclude favStory
-    currentUser.favorites = Object.values(currentUser.favorites).filter(story => story.storyId !== favStory);
+      // Make changes to API
+      const addFave = await axios({
+        url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
+        method: "POST",
+        data: {token: currentUser.loginToken},
+      });
 
-    // Sync to API
-    const removeFave = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
-      method: "DELETE",
-      data: {token: currentUser.loginToken},
-    });
-  }
+    }
+
+    // REMOVE FAVORITE
+    else if($(this).hasClass("fa-solid")){
+      $(this).removeClass("fa-solid").addClass("fa-regular");
+
+      const favStory = $(this).parent().attr('id')
+
+      // Filter favorites to exclude favStory
+      currentUser.favorites = Object.values(currentUser.favorites).filter(story => story.storyId !== favStory);
+
+      // Sync to API
+      const removeFave = await axios({
+        url: `${BASE_URL}/users/${currentUser.username}/favorites/${favStory}`,
+        method: "DELETE",
+        data: {token: currentUser.loginToken},
+      });
+    }
+    }
+  
 
 }
 
