@@ -42,9 +42,6 @@ function hidePageComponents() {
     $loginForm,
     $signupForm,
     $submitForm
-    // $txtAuthor,
-    // $txtURL,
-    // $btnSubmit
   ];
   components.forEach(c => c.hide());
 }

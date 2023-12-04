@@ -20,7 +20,6 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
   return $(`
@@ -57,7 +56,6 @@ function addOwnStories(story){
   story.each(function () {
     const $storyId = $(this).attr('id');
     if (ownStories.includes($storyId)) {
-      // console.log($(this))
       const $newButton = $("<input>")
       $newButton.prop('type', "button").attr("class", "btnRemoveStory").prop('value', "remove?");
       $(this).append($newButton);
@@ -138,8 +136,7 @@ async function removeStory(){
     // Removes from DOM
     $(this).parent().remove();
 
-    // Change this later
-    // location.reload();
+    location.reload();
   }
   else return;
 }
