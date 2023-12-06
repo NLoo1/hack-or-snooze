@@ -147,6 +147,8 @@ class User {
       data: { user: { username, password, name } },
     });
 
+    // Add error message
+
     let { user } = response.data
 
     return new User(
@@ -173,6 +175,8 @@ class User {
       method: "POST",
       data: { user: { username, password } },
     });
+
+    // Add error message
 
     let { user } = response.data;
 

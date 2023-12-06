@@ -95,13 +95,18 @@ async function submitNewStory(){
   const author = $txtAuthor.val();
   const title = $txtTitle.val();
   const url = $txtURL.val();
-  await storyList.addStory(currentUser, {title: title, author: author, url: url});
-  putStoriesOnPage();
 
-  $txtAuthor.val("");
-  $txtTitle.val("");
-  $txtURL.val("");
-  $submitForm.hide();
+  if(author == '' || title == '' || url == '') alert("Please fill out all fields!")
+  else{
+    await storyList.addStory(currentUser, {title: title, author: author, url: url});
+    putStoriesOnPage();
+
+    $txtAuthor.val("");
+    $txtTitle.val("");
+    $txtURL.val("");
+    $submitForm.hide();
+  }
+  
 }
 
 // Removes story

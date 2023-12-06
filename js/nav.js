@@ -35,6 +35,11 @@ function openStorySubmit(){
 }
 
 function showFavorites(){
+
+  // Hide submit story 
+  $submitForm.hide();
+
+
   // Remove LIs and show only favorites
   $allStoriesList.empty();
 
@@ -56,6 +61,10 @@ function showFavorites(){
 }
 
 function showOwnStories(){
+
+  // Hide submit story 
+  $submitForm.hide();
+
   // Remove LIs and show only stories
   $allStoriesList.empty();
 

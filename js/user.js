@@ -50,6 +50,9 @@ async function signup(evt) {
   updateUIOnUserLogin();
 
   $signupForm.trigger("reset");
+
+  $loginForm.hide();
+  $signupForm.hide();
 }
 
 $signupForm.on("submit", signup);
